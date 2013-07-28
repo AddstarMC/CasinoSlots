@@ -72,7 +72,7 @@ public class ResultsTask implements Runnable {
 					if (action.contains("broadcast ")) {
 						action = action.substring(0, action.indexOf(" "));
 					}
-					game.plugin.debug("Action: " + action);
+					//game.plugin.debug("Action: " + action);
 				}
 			}
 			
@@ -96,7 +96,7 @@ public class ResultsTask implements Runnable {
 		
 		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss");
 		String log = ft.format(new Date()) + "," + player.getName() + "," + name + "," + result + "," + cost + "," + won + "," + action;
-		game.plugin.debug(log);
+		//game.plugin.debug(log);
 		game.plugin.logResult(log + "\n");
 		
 		// Register statistics
