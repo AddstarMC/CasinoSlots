@@ -1,5 +1,9 @@
 package com.craftyn.casinoslots;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Server;
@@ -52,11 +56,19 @@ public class CasinoSlots extends JavaPlugin {
 	public Permissions permission = new Permissions(this);
 	public TownyChecks townyChecks = null;
 
+	private FileWriter resultsLog;
+
 	public void onDisable() {
 		if (economy != null) {
 			//configData.save();
 			configData.saveSlots();
 			configData.saveStats();
+			try {
+				resultsLog.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			this.configData = null;
 			this.slotData = null;
@@ -120,11 +132,17 @@ public class CasinoSlots extends JavaPlugin {
 			}
 		}
 		
+		// Open the results file
+		try {
+			resultsLog = new FileWriter("plugins/CasinoSlots/results.csv", true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(blockListener, this);
 		pm.registerEvents(chunkListener, this);
 		pm.registerEvents(entity, this);
-		
 		
 		getCommand("casino").setExecutor(commandExecutor);
 		pluginVer = getDescription().getVersion();
@@ -221,5 +239,14 @@ public class CasinoSlots extends JavaPlugin {
 	/** Returns the instance of World Guard. */
 	public WorldGuardPlugin getWorldGuard() {
 		return worldGuard;
+	}
+	
+	public void logResult(String line) {
+		try {
+			resultsLog.append(line);
+			resultsLog.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

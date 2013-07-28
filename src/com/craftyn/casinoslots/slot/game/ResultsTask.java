@@ -1,6 +1,8 @@
 package com.craftyn.casinoslots.slot.game;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
+import com.craftyn.casinoslots.CasinoSlots;
 import com.craftyn.casinoslots.slot.Reward;
 import com.craftyn.casinoslots.slot.SlotMachine;
 import com.craftyn.casinoslots.slot.Type;
@@ -36,11 +39,15 @@ public class ResultsTask implements Runnable {
 		String name = type.getName();
 		Double cost = type.getCost();
 		Double won = 0.0;
+		String action = "";
+		String result = "lose";
 		
 		ArrayList<Reward> results = getResults();
 		
 		if(!results.isEmpty()) {
 			SlotMachine slot = game.getSlot();
+			action = "";
+			result = "win";
 			
 			if(!(slot.getSign() == null)) {
 				Block b = slot.getSign();
@@ -58,11 +65,19 @@ public class ResultsTask implements Runnable {
 				game.plugin.rewardData.send(player, reward, type);
 				won += reward.getMoney();
 				if(game.plugin.configData.inDebug()) game.plugin.debug("The player has won an amount of: " + won);
+
+				// Is there an action on this result?
+				if (reward.getAction() != null) {
+					action = reward.getAction().get(0);
+					if (action.contains("broadcast ")) {
+						action = action.substring(0, action.indexOf(" "));
+					}
+					game.plugin.debug("Action: " + action);
+				}
 			}
 			
 			// Managed
 			if(slot.isManaged()) {
-				
 				slot.withdraw(won);
 				game.plugin.slotData.saveSlot(slot);
 				Double max = game.plugin.typeData.getMaxPrize(type.getName());
@@ -74,9 +89,15 @@ public class ResultsTask implements Runnable {
 		
 		// No win
 		else {
+			action = "";
 			if(game.plugin.configData.inDebug()) game.plugin.debug("The player has won an amount of: " + won);
 			game.plugin.sendMessage(player, type.getMessages().get("noWin"));
 		}
+		
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss");
+		String log = ft.format(new Date()) + "," + player.getName() + "," + name + "," + result + "," + cost + "," + won + "," + action;
+		game.plugin.debug(log);
+		game.plugin.logResult(log + "\n");
 		
 		// Register statistics
 		if(game.plugin.configData.trackStats) {

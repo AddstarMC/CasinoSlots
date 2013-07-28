@@ -224,6 +224,8 @@ public class RewardData {
 				//Set the sender of the command as the console
 				CommandSender sender = plugin.server.getConsoleSender();
 				
+				plugin.debug("Full command: " + a);
+				
 				for(String bit : a) {
 					//Strip the "command"
 					if (bit.equalsIgnoreCase("command")) {
@@ -236,9 +238,12 @@ public class RewardData {
 						continue;
 					}
 					
+					plugin.debug("Part: " + bit);
+					
 					//Strip [player] and make it equal the player who played the slot
 					if (bit.equalsIgnoreCase("[player]")) {
 						bit = p.getName();
+						plugin.debug("Found [player] string");
 					}
 					
 					// Add the current bit to the command
@@ -265,42 +270,15 @@ public class RewardData {
 				}
 				
 				//Initiate the message to broadcast
-				String message = null;
+				String message = action.substring("broadcast".length() + 1); 
+				plugin.debug("Message: " + message);
 				
-				//Start the loop for the message
-				for(String bit : a) {
-					//Strip the "broadcast"
-					if (bit.equalsIgnoreCase("broadcast")) continue;
-					
-					//Replace the "null" with the word right after 'broadcast'
-					if (bit.equalsIgnoreCase(a[1])) {
-						message = bit;
-						continue;
-					}
-					
-					//Strip [player] and make bit equal to the player who played the slot
-					if (bit.equalsIgnoreCase("[player]")) {
-						bit = p.getName();
-					}
-					
-					//Strip [cost] and make bit equal to the cost of playing the slot
-					if (bit.equalsIgnoreCase("[cost]")) {
-						bit = String.valueOf(type.getCost());
-					}
-					
-					//Strip [type] and make the bit equal to the name of the type won
-					if (bit.equalsIgnoreCase("[type]")) {
-						bit = type.getName();
-					}
-					
-					if(bit.equalsIgnoreCase("[moneywon]")) {
-						bit = String.valueOf(reward.money);
-					}
-					
-					//Add onto the message that is going to be broadcasted
-					message = message + " " + bit;
-				}
-				
+				//Strip [player] and make bit equal to the player who played the slot
+				message = message.replace("[player]", p.getName());
+				message = message.replace("[cost]", type.getCost().toString());
+				message = message.replace("[type]", type.getName());
+				message = message.replace("[moneywon]", reward.money.toString());
+
 				//Convert all color codes so that Minecraft shows them as color
 				message = message.replaceAll("(?i)&([0-9abcdefklmnor])", "\u00A7$1");
 				
