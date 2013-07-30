@@ -3,7 +3,7 @@ main: com.craftyn.casinoslots.CasinoSlots
 author: [graywolf336,Darazo]
 version: 2.5.5-b${BUILD_NUMBER}-adam
 description: Real slot machines for your server.
-softdepend: [Vault,iConomy,Towny,WorldEdit,WorldGuard]
+softdepend: [Vault, iConomy, Towny, Multiverse-Core, My Worlds, WorldEdit, WorldGuard]
 commands:
     casino:
         description: CasinoSlots
