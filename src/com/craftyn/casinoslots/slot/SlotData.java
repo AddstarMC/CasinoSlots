@@ -238,7 +238,7 @@ public class SlotData {
 	// Creates the slot machine in the world
 	public void createReel(Player player, BlockFace face, SlotMachine slot) {
 		
-		Block center = player.getTargetBlock(null, 0);
+		Block center = player.getTargetBlock((Set)null, 0);
 		ArrayList<Block> blocks = new ArrayList<Block>();
 		
 		slot.setReelChunk(center.getChunk().getX() + "," + center.getChunk().getZ());
