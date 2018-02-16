@@ -49,11 +49,9 @@ public class ChunkListener implements Listener {
 	    			event.setCancelled(true);
 	    			if(plugin.configData.displayChunk || plugin.configData.debug) plugin.log("Kept chunk: (" + x + ", " + z + " " + world + ") for CasinoSlot - " + slot.getName() + " - loaded.");
 	    		}else {
-	    			continue;
-	    		}
+                }
 	    	}else {
-	    		continue;
-	    	}
+            }
 	    }
 	}
 }

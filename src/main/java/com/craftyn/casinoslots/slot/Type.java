@@ -11,7 +11,7 @@ public class Type {
 	protected CasinoSlots plugin;
 	
 	private String name, itemCost = String.valueOf(0);
-	private Double cost = Double.valueOf(0), createCost = Double.valueOf(0);
+	private Double cost = 0d, createCost = 0d;
 	private ArrayList<String> reel;
 	private Map<String, String> messages;
 	private List<String> helpMessages;

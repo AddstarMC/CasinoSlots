@@ -202,7 +202,7 @@ public class ConfigData {
 		config.set("types."+ name +".cost", 100);
 		config.set("types."+ name +".create-cost", 1000);
 		
-		ArrayList<String> reel = new ArrayList<String>();
+		ArrayList<String> reel = new ArrayList<>();
 		reel.add("42,10");
 		reel.add("41,5");
 		reel.add("57,2");

@@ -1,12 +1,6 @@
 package com.craftyn.casinoslots.slot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.craftyn.casinoslots.CasinoSlots;
 
@@ -56,15 +50,12 @@ public class TypeData {
 	
 	// Check if a type exists
 	public Boolean isType(String type) {
-		if(types.containsKey(type)) {
-			return true;
-		}
-		return false;
-	}
+        return types.containsKey(type);
+    }
 	
 	// Load all types into memory
 	public void loadTypes() {		
-		this.types = new HashMap<String, Type>();
+		this.types = new HashMap<>();
 		Integer i = 0;
 		
 		if(plugin.configData.config.isConfigurationSection("types")) {
@@ -108,7 +99,7 @@ public class TypeData {
 	private ArrayList<String> getReel(String type) {		
 		List<String> reel = plugin.configData.config.getStringList("types." + type + ".reel");
 		
-		ArrayList<String> parsedReel = new ArrayList<String>();
+		ArrayList<String> parsedReel = new ArrayList<>();
 		for(String m : reel) {
 			String[] mSplit = m.split("\\,");
 			int i = 1;
@@ -154,7 +145,7 @@ public class TypeData {
 			}else {
 				if(plugin.configData.inDebug()) plugin.debug("The reward does have the 'action' but it is only a string, so we get it as a string and store it as a list");
 				String a = plugin.configData.config.getString(path + "action");
-				action = Arrays.asList(a);
+				action = Collections.singletonList(a);
 			}
 		}
 		
@@ -165,7 +156,7 @@ public class TypeData {
 	// Returns Map of all rewards for this type
 	public Map<String, Reward> getRewards(String type) {
 		Set<String> ids = plugin.configData.config.getConfigurationSection("types." + type +".rewards").getKeys(false);
-		Map<String, Reward> rewards = new HashMap<String, Reward>();
+		Map<String, Reward> rewards = new HashMap<>();
 		
 		for(String itemId : ids) {
 			int id = 1; //setting this to 1 just in case something is wrong
@@ -186,7 +177,7 @@ public class TypeData {
 	
 	// Returns map of messages
 	private HashMap<String, String> getMessages(String type) {		
-		HashMap<String, String> messages = new HashMap<String, String>();
+		HashMap<String, String> messages = new HashMap<>();
 		Double cost = plugin.configData.config.getDouble("types." + type +".cost");
 
 		messages.put("noPermission", plugin.configData.config.getString("types." + type +".messages.insufficient-permission", "You don't have permission to use this slot."));

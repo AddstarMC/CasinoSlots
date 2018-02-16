@@ -16,7 +16,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
-import com.craftyn.casinoslots.CasinoSlots;
 import com.craftyn.casinoslots.slot.Reward;
 import com.craftyn.casinoslots.slot.SlotMachine;
 import com.craftyn.casinoslots.slot.Type;
@@ -134,23 +133,23 @@ public class ResultsTask implements Runnable {
 	// Gets the results
 	private ArrayList<Reward> getResults() {
 		
-		ArrayList<Reward> results = new ArrayList<Reward>();
+		ArrayList<Reward> results = new ArrayList<>();
 		ArrayList<Block> blocks = game.getSlot().getBlocks();
 		
 		// checks horizontal matches
 		for(int i = 0; i < 5; i++) {
 			Reward reward;
-			ArrayList<String> currentId = new ArrayList<String>();
+			ArrayList<String> currentId = new ArrayList<>();
 			List<Block> current = null;
 			
 			if(i < 3) {
-				int start = 0 + 3 * i;
+				int start = 3 * i;
 				int end = 3 + 3 * i;
 				current = blocks.subList(start, end);
 			}else {
 				//diagonals
 				if(game.plugin.configData.allowDiagonals) {
-					current = new ArrayList<Block>();
+					current = new ArrayList<>();
 					for(int j = 0; j < 3; j++) {
 						if(i == 3) {
 							current.add(blocks.get(j*4));
@@ -169,7 +168,7 @@ public class ResultsTask implements Runnable {
 			}
 			
 			// Check for matches, deploy rewards
-			Set<String> currentSet = new HashSet<String>(currentId);
+			Set<String> currentSet = new HashSet<>(currentId);
 			if(currentSet.size() == 1) {
 				
 				// Added for the damage value blocks and rewards

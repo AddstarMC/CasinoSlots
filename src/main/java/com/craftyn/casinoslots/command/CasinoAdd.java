@@ -24,24 +24,7 @@ public class CasinoAdd extends AnCommand {
 			noPermission();
 			return true;
 		}
-		
-		//Check for simple player things before they try to add a slot
-		if(plugin.useTowny) {
-			if(plugin.configData.onlyTowns) {
-				if(!plugin.townyChecks.checkTown(player)) {
-					plugin.sendMessage(player, plugin.configData.noTown);
-					return true;
-				}
-			}
-			
-			if(plugin.configData.onlyMayors) {
-				if(!plugin.townyChecks.checkMayor(player)) {
-					plugin.sendMessage(player, plugin.configData.noMayor);
-					return true;
-				}
-			}
-		}
-		
+
 		// Valid command format
 		if(args.length >= 2 && args.length <= 3) {
 						
@@ -79,8 +62,8 @@ public class CasinoAdd extends AnCommand {
 				
 				// Creation cost
 				Double createCost = plugin.typeData.getType(type).getCreateCost();
-				if(plugin.economy.has(owner, createCost)) {
-					plugin.economy.withdrawPlayer(owner, createCost);
+				if(plugin.economy.has(player, createCost)) {
+					plugin.economy.withdrawPlayer(player, createCost);
 				}
 				else {
 					sendMessage(player.getName());

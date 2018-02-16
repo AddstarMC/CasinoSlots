@@ -22,13 +22,13 @@ public class RotateTask implements Runnable {
 	public void run() {
 		rotateColumn(i);	
 	}
-	
+	//todo 1.13 FIX
 	// Rotates one column one block
 	private void rotateColumn(Integer column) {
 		
 		ArrayList<Block> blocks = game.getSlot().getBlocks();
 		
-		ArrayList<String> last = new ArrayList<String>();
+		ArrayList<String> last = new ArrayList<>();
 		last.add(blocks.get(column+6).getTypeId() + ":" + blocks.get(column+6).getData());
 		last.add(blocks.get(column+3).getTypeId() + ":" + blocks.get(column+3).getData());
 		

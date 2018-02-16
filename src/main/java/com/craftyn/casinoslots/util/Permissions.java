@@ -33,7 +33,7 @@ public class Permissions {
 	 * Returns true if the player can create slots. It checks the following permissions:
 	 * 
 	 * <ul>
-	 *  <li>{@link isAdmin}</li>
+	 *  <li>check for admin</li>
 	 *  <li>casinoslots.create</li>
 	 *  <li>casinoslots.create.*</li>
 	 * </ul>
@@ -50,7 +50,7 @@ public class Permissions {
 	 * 
 	 * The following are the permissions it checks:
 	 *  <ul>
-	 *  	<li>{@link isAdmin}</li>
+	 *  <li>check for admin</li>
 	 *  	<li>casinoslots.create. type</li>
 	 *  	<li>casinoslots.create.*</li>
 	 *  </ul>
@@ -81,7 +81,7 @@ public class Permissions {
 	 * 
 	 * The player must either have:
 	 * <ul>
-	 * 	<li>{@link isAdmin}</li>
+	 *  <li>check for admin</li>
 	 *  <li>casinoslots.create.managed.*</li>
 	 *  <li>casinoslots.create.managed</li>
 	 *  <li>casinoslots.create.*</li>
@@ -100,8 +100,8 @@ public class Permissions {
 	 * 
 	 * The player must either have:
 	 * <ul>
-	 * 	<li>{@link isAdmin}</li>
-	 *  <li>casinoslots.create.managed.{@value type}</li>
+	 *  <li>check for admin</li>
+	 *  <li>casinoslots.create.managed. </li>
 	 *  <li>casinoslots.create.managed.*</li>
 	 *  <li>casinoslots.create.managed</li>
 	 *  <li>casinoslots.create.*</li>
@@ -121,8 +121,8 @@ public class Permissions {
 	 * 
 	 * The player must either have:
 	 * <ul>
-	 * 	<li>{@link isAdmin}</li>
-	 *  <li>casinoslots.create.items.{@value type}</li>
+	 *  <li>check for admin</li>
+	 *  <li>casinoslots.create.items. </li>
 	 *  <li>casinoslots.create.items.*</li>
 	 *  <li>casinoslots.create.items</li>
 	 *  <li>casinoslots.create.*</li>

@@ -55,8 +55,8 @@ public class AnSlot extends AnCommand {
 					String name = player.getName();
 					Double cost = type.getCreateCost();
 					
-					if(plugin.economy.has(name, cost)) {
-						plugin.economy.withdrawPlayer(name, cost);
+					if(plugin.economy.has(player, cost)) {
+						plugin.economy.withdrawPlayer(player, cost);
 						slot.setType(type.getName());
 					}
 					else {
@@ -106,7 +106,7 @@ public class AnSlot extends AnCommand {
 			Double amount = Double.parseDouble(args[3]);
 			
 			// Insufficient funds
-			if(!plugin.economy.has(player.getName(), amount)) {
+			if(!plugin.economy.has(player, amount)) {
 				sendMessage("You can't afford to deposit this much.");
 			}
 			else {
@@ -117,7 +117,7 @@ public class AnSlot extends AnCommand {
 				}
 				
 				slot.deposit(amount);
-				plugin.economy.withdrawPlayer(player.getName(), amount);
+				plugin.economy.withdrawPlayer(player, amount);
 				sendMessage("Deposited " + amount +" to " + slot.getName());
 			}
 		}
@@ -138,7 +138,7 @@ public class AnSlot extends AnCommand {
 			}
 			
 			slot.withdraw(amount);
-			plugin.economy.depositPlayer(player.getName(), amount);
+			plugin.economy.depositPlayer(player, amount);
 			sendMessage("Withdrew " + amount +" from " + slot.getName());
 		}
 		

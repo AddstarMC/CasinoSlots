@@ -1,5 +1,6 @@
 package com.craftyn.casinoslots.slot;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -33,9 +34,9 @@ public class RewardData {
 		
 		if(reward.money != null) {
 			if(reward.money < 0)
-				plugin.economy.withdrawPlayer(player.getName(), Math.abs(reward.money));
+				plugin.economy.withdrawPlayer(player, Math.abs(reward.money));
 			else
-				plugin.economy.depositPlayer(player.getName(), reward.money);
+				plugin.economy.depositPlayer(player, reward.money);
 		}
 		
 		if(reward.action != null && !reward.action.isEmpty()) {
@@ -219,12 +220,12 @@ public class RewardData {
 				}
 				
 				//Initialize the command
-				String command = null;
+				StringBuilder command = null;
 				
 				//Set the sender of the command as the console
 				CommandSender sender = plugin.server.getConsoleSender();
 				
-				plugin.debug("Full command: " + a);
+				plugin.debug("Full command: " + Arrays.toString(a));
 				
 				for(String bit : a) {
 					//Strip the "command"
@@ -234,7 +235,7 @@ public class RewardData {
 					
 					//Replace the "null" with the word after command
 					if (bit.equalsIgnoreCase(a[1])) {
-						command = bit;
+						command = new StringBuilder(bit);
 						continue;
 					}
 					
@@ -247,17 +248,15 @@ public class RewardData {
 					}
 					
 					// Add the current bit to the command
-					command = command + " " + bit;
+					command.append(" ").append(bit);
 				}
 				
 				//Check to make sure the command isn't actually null
 				if (command != null) {
-					plugin.server.dispatchCommand(sender, command);
-					continue;
+					plugin.server.dispatchCommand(sender, command.toString());
 				}else {
 					// if it is, then return an error in the console and don't do anything.
 					plugin.error("Couldn't find a command to do, please check your config.yml file.");
-					continue;
 				}
 			}
 			

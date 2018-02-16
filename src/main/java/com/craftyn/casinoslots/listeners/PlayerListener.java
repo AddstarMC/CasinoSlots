@@ -43,14 +43,6 @@ public class PlayerListener implements Listener {
 				BlockFace face = event.getBlockFace();
 				
 				if(face != BlockFace.DOWN && face != BlockFace.UP) {
-					if(plugin.useTowny) {					
-						if(!plugin.townyChecks.checkSlotsTowny(b, face, player.getName())) {
-							SlotMachine slot = plugin.slotData.creatingSlots.get(player);
-							plugin.slotData.toggleCreatingSlots(player, slot);
-							plugin.sendMessage(player, plugin.configData.noOwnership);
-							return;
-						}
-					}
 					
 					if(plugin.useWorldGuard) {
 						if(!plugin
@@ -78,15 +70,7 @@ public class PlayerListener implements Listener {
 				}
 			}else if(event.getAction() == Action.LEFT_CLICK_BLOCK && plugin.slotData.isPlacingController(player)) {
 				// Placing controller
-				
-				if(plugin.useTowny) {					
-					if(!plugin.townyChecks.checkSingleTowny(b, player.getName())) {
-						SlotMachine slot = plugin.slotData.placingController.get(player);
-						plugin.slotData.togglePlacingController(player, slot);
-						plugin.sendMessage(player, plugin.configData.noOwnership);
-						return;
-					}
-				}
+
 				
 				if(plugin.useWorldGuard) {
 					if(!plugin.getWorldGuard().canBuild(player, b)) {
@@ -107,15 +91,6 @@ public class PlayerListener implements Listener {
 				return;
 			}else if(event.getAction() == Action.LEFT_CLICK_BLOCK && plugin.slotData.isPunchingSign(player)) {
 				//setting the sign
-				
-				if(plugin.useTowny) {
-					if(!plugin.townyChecks.checkSingleTowny(b, player.getName())) {
-						SlotMachine slot = plugin.slotData.punchingSign.get(player);
-						plugin.slotData.togglePunchingSign(player, slot);
-						plugin.sendMessage(player, plugin.configData.noOwnership);
-						return;
-					}
-				}
 				
 				if(plugin.useWorldGuard) {
 					if(!plugin.getWorldGuard().canBuild(player, b)) {
@@ -370,10 +345,8 @@ public class PlayerListener implements Listener {
 			//Let's go!
 			Game game = new Game(slot, player, plugin);
 			game.play();
-			return;	
 		}else {// Player does not have enough money
 			plugin.sendMessage(player, type.getMessages().get("noFunds"));
-			return;
 		}
 	}
 }

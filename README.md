@@ -1,6 +1,9 @@
 # CasinoSlots #
 
 A majorly updated version of AnCasino started by Darazo
+### Update 2.6.0 ###
+* Removed Towny as a dependency
+* Fixed Vault deprecation
 
 ### Update: 2.5.5 ###
 * Using the logger provided with Bukkit

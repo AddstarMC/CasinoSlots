@@ -64,7 +64,7 @@ public class Game {
 		// Cost
 		if (!slot.isItem()) {
 			Double cost = getType().getCost();
-			plugin.economy.withdrawPlayer(player.getName(), cost);
+			plugin.economy.withdrawPlayer(player, cost);
 			if(slot.isManaged()) {
 				slot.deposit(cost);
 				plugin.slotData.saveSlot(slot);

@@ -36,13 +36,13 @@ public class CasinoDeposit extends AnCommand {
 						return true;
 					}
 					
-					double pAccount = plugin.economy.getBalance(player.getName());
+					double pAccount = plugin.economy.getBalance(player);
 					if (amount > pAccount) {
 						sendMessage("You can't deposit that much since you don't have that much.");
 						return true;
 					}else {
 						slot.deposit(amount);
-						plugin.economy.withdrawPlayer(player.getName(), amount);
+						plugin.economy.withdrawPlayer(player, amount);
 						sendMessage(amount +  " deposited to " + args[1] + ".");
 						sendMessage(args[1] + " now has " + slot.getFunds() + " in it's account.");
 						plugin.slotData.saveSlot(slot);

@@ -18,11 +18,11 @@ import com.craftyn.casinoslots.CasinoSlots;
 public class SlotData {
 	
 	private CasinoSlots plugin;
-	private HashMap<String, SlotMachine> slots = new HashMap<String, SlotMachine>();
+	private HashMap<String, SlotMachine> slots = new HashMap<>();
 	
-	public HashMap<Player, SlotMachine> creatingSlots = new HashMap<Player, SlotMachine>();
-	public HashMap<Player, SlotMachine> placingController = new HashMap<Player, SlotMachine>();
-	public HashMap<Player, SlotMachine> punchingSign = new HashMap<Player, SlotMachine>();
+	public HashMap<Player, SlotMachine> creatingSlots = new HashMap<>();
+	public HashMap<Player, SlotMachine> placingController = new HashMap<>();
+	public HashMap<Player, SlotMachine> punchingSign = new HashMap<>();
 	
 	
 	// Initialize SlotData
@@ -59,10 +59,7 @@ public class SlotData {
 	
 	// Returns true if slot machine exists
 	public Boolean isSlot(String name) {
-		if(this.slots.containsKey(name)) {
-			return true;
-		}
-		return false;
+		return this.slots.containsKey(name);
 	}
 	
 	// Removes a slot machine
@@ -90,7 +87,7 @@ public class SlotData {
 	public void loadSlots() {
 		
 		Integer i = 0;
-		this.slots = new HashMap<String, SlotMachine>();
+		this.slots = new HashMap<>();
 		if(plugin.configData.slots.isConfigurationSection("slots")) {
 			Set<String> slots = plugin.configData.slots.getConfigurationSection("slots").getKeys(false);
 			if(!slots.isEmpty()) {
@@ -108,7 +105,7 @@ public class SlotData {
 	public void saveSlot(SlotMachine slot) {
 		
 		String path = "slots." + slot.getName() + ".";
-		ArrayList<String> xyz = new ArrayList<String>();
+		ArrayList<String> xyz = new ArrayList<>();
 		
 		for(Block b : slot.getBlocks()) {
 			xyz.add(b.getX() + "," + b.getY() + "," + b.getZ());
@@ -171,7 +168,7 @@ public class SlotData {
 	private ArrayList<Block> getBlocks(String name) {
 		
 		List<String> xyz = plugin.configData.slots.getStringList("slots." + name + ".location");
-		ArrayList<Block> blocks = new ArrayList<Block>();
+		ArrayList<Block> blocks = new ArrayList<>();
 		World world = Bukkit.getWorld(plugin.configData.slots.getString("slots." + name + ".world", "world"));
 				
 		if (world == null) {
@@ -238,8 +235,8 @@ public class SlotData {
 	// Creates the slot machine in the world
 	public void createReel(Player player, BlockFace face, SlotMachine slot) {
 		
-		Block center = player.getTargetBlock((Set)null, 0);
-		ArrayList<Block> blocks = new ArrayList<Block>();
+		Block center = player.getTargetBlock(null, 0);
+		ArrayList<Block> blocks = new ArrayList<>();
 		
 		slot.setReelChunk(center.getChunk().getX() + "," + center.getChunk().getZ());
 		
@@ -270,38 +267,36 @@ public class SlotData {
 	
 	// Used for orienting the slot machine correctly
 	public BlockFace getDirection(BlockFace face, String direction) {
-		
-		if(face == BlockFace.NORTH) {
-			if(direction.equalsIgnoreCase("left")) {
-				return BlockFace.EAST;
-			}
-			else if(direction.equalsIgnoreCase("right")) {
-				return BlockFace.WEST;
-			}
-		}
-		else if(face == BlockFace.SOUTH) {
-			if(direction.equalsIgnoreCase("left")) {
-				return BlockFace.WEST;
-			}
-			else if(direction.equalsIgnoreCase("right")) {
-				return BlockFace.EAST;
-			}
-		}
-		else if(face == BlockFace.WEST) {
-			if(direction.equalsIgnoreCase("left")) {
-				return BlockFace.SOUTH;
-			}
-			else if(direction.equalsIgnoreCase("right")) {
-				return BlockFace.NORTH;
-			}
-		}
-		else if(face == BlockFace.EAST) {
-			if(direction.equalsIgnoreCase("left")) {
-				return BlockFace.NORTH;
-			}
-			else if(direction.equalsIgnoreCase("right")) {
-				return BlockFace.SOUTH;
-			}
+
+		switch (face) {
+			case NORTH:
+				if (direction.equalsIgnoreCase("left")) {
+					return BlockFace.EAST;
+				} else if (direction.equalsIgnoreCase("right")) {
+					return BlockFace.WEST;
+				}
+				break;
+			case SOUTH:
+				if (direction.equalsIgnoreCase("left")) {
+					return BlockFace.WEST;
+				} else if (direction.equalsIgnoreCase("right")) {
+					return BlockFace.EAST;
+				}
+				break;
+			case WEST:
+				if (direction.equalsIgnoreCase("left")) {
+					return BlockFace.SOUTH;
+				} else if (direction.equalsIgnoreCase("right")) {
+					return BlockFace.NORTH;
+				}
+				break;
+			case EAST:
+				if (direction.equalsIgnoreCase("left")) {
+					return BlockFace.NORTH;
+				} else if (direction.equalsIgnoreCase("right")) {
+					return BlockFace.SOUTH;
+				}
+				break;
 		}
 		return BlockFace.SELF;
 		
@@ -309,32 +304,23 @@ public class SlotData {
 	
 	// If a player is creating slot machine
 	public Boolean isCreatingSlots(Player player) {
-		
-		if(creatingSlots.containsKey(player)) {
-			return true;
-		}
-		
-		return false;
+
+		return creatingSlots.containsKey(player);
+
 	}
 	
 	// If a player is placing controller
 	public Boolean isPlacingController(Player player) {
-		
-		if(placingController.containsKey(player)) {
-			return true;
-		}
-		
-		return false;
+
+		return placingController.containsKey(player);
+
 	}
 	
 	// If a player is placing controller
 	public Boolean isPunchingSign(Player player) {
-		
-		if(punchingSign.containsKey(player)) {
-			return true;
-		}
-		
-		return false;
+
+		return punchingSign.containsKey(player);
+
 	}
 	
 	// Toggles creating slots

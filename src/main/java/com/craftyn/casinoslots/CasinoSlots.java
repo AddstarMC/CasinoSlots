@@ -1,6 +1,5 @@
 package com.craftyn.casinoslots;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,9 +24,7 @@ import com.craftyn.casinoslots.slot.TypeData;
 import com.craftyn.casinoslots.util.ConfigData;
 import com.craftyn.casinoslots.util.Permissions;
 import com.craftyn.casinoslots.util.StatData;
-import com.craftyn.casinoslots.util.TownyChecks;
 
-import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class CasinoSlots extends JavaPlugin {
@@ -36,7 +33,6 @@ public class CasinoSlots extends JavaPlugin {
 	public Economy economy = null;
 	public Server server;
 	private PluginManager pm = null;
-	private Towny towny = null;
 	private WorldGuardPlugin worldGuard = null;
 	
 	public String pluginVer;
@@ -54,7 +50,6 @@ public class CasinoSlots extends JavaPlugin {
 	public StatData statsData = new StatData(this);
 	public RewardData rewardData = new RewardData(this);
 	public Permissions permission = new Permissions(this);
-	public TownyChecks townyChecks = null;
 
 	private FileWriter resultsLog;
 
@@ -76,9 +71,6 @@ public class CasinoSlots extends JavaPlugin {
 			this.statsData = null;
 			this.rewardData = null;
 			this.permission = null;
-			this.townyChecks = null;
-			
-			this.towny = null;
 		}
 	}
 
@@ -117,21 +109,7 @@ public class CasinoSlots extends JavaPlugin {
 				log("World Guard checking enabled.");
 			}
 		}
-		
-		if(configData.inDebug()) debug("Use Towny checks? " + useTowny);
-		if(configData.inDebug()) debug("Based upon the above {^} what is below? {V}");
-		if(useTowny) {
-			checkTowny();
-			if(towny == null) {
-				useTowny = false;
-				error("Towny was not found even though you had it enabled, disabling checks.");
-				if(configData.inDebug()) debug("Use Towny checks now? " + useTowny);
-			}else {
-				townyChecks = new TownyChecks(this);
-				log("Towny checking enabled.");
-			}
-		}
-		
+
 		// Open the results file
 		try {
 			resultsLog = new FileWriter("plugins/CasinoSlots/results.csv", true);
@@ -164,13 +142,7 @@ public class CasinoSlots extends JavaPlugin {
 			worldGuard = (WorldGuardPlugin) pl;
 		}
 	}
-	
-	private void checkTowny() {
-        Plugin pl = pm.getPlugin("Towny");
-        if (pl != null && pl instanceof Towny) {
-        	towny = (Towny)pl;
-        }
-	}
+
 	
 	/**
 	 * Sends a properly formatted message to the player.

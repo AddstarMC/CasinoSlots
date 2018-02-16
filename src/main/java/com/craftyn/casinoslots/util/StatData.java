@@ -10,7 +10,7 @@ import com.craftyn.casinoslots.CasinoSlots;
 public class StatData {
 	
 	protected CasinoSlots plugin;
-	private HashMap<String, Stat> stats = new HashMap<String, Stat>();
+	private HashMap<String, Stat> stats = new HashMap<>();
 	public Integer globalSpins, globalWins, globalLosts;
 	public Double globalWon, globalLost;
 	
@@ -124,7 +124,7 @@ public class StatData {
 		
 		if(plugin.configData.trackStats) {
 			
-			this.stats = new HashMap<String, Stat>();
+			this.stats = new HashMap<>();
 			
 			this.globalSpins = 0;
 			this.globalWins = 0;
