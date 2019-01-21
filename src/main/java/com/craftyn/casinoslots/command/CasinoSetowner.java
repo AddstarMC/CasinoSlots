@@ -1,5 +1,9 @@
 package com.craftyn.casinoslots.command;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.craftyn.casinoslots.CasinoSlots;
@@ -22,10 +26,18 @@ public class CasinoSetowner extends AnCommand {
 				
 				// Can access slot
 				if(isOwner(slot)) {
-					String owner = args[2];
-					slot.setOwner(owner);
-					sendMessage(owner + " is now the owner of the " + args[1] + " slot machine.");
-				}
+					OfflinePlayer owner = Bukkit.getOfflinePlayer(args[2]);
+					if(owner == null) {
+						UUID uuid = UUID.fromString(args[2]);
+						owner = Bukkit.getOfflinePlayer(uuid);
+					}
+					if(owner == null){
+						sendMessage(args[2] + " is not a valid owner of " + args[1] + " slot machine.");
+					}else {
+						slot.setOwner(owner.getUniqueId());
+						sendMessage(owner + " is now the owner of the " + args[1] + " slot machine.");
+					}
+			}
 				// No access
 				else {
 					sendMessage("You do not own this slot machine.");

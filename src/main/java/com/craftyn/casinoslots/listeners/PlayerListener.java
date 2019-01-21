@@ -2,6 +2,8 @@ package com.craftyn.casinoslots.listeners;
 
 import java.util.List;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.registry.LegacyMapper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -101,7 +103,7 @@ public class PlayerListener implements Listener {
 					}
 				}
 				
-				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN_POST)) {
+				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN)) {
 					SlotMachine slot = plugin.slotData.punchingSign.get(player);
 					
 					Sign sign = (Sign) b.getState();
@@ -149,14 +151,13 @@ public class PlayerListener implements Listener {
 									// See if the slot is an item game
 									if(slot.isItem()) {
 										// Get the information about the item cost
-										int itemID, itemAmt;
-										itemID = slot.getItem();
+										int itemAmt;
 										itemAmt = slot.getItemAmount();
 										
-										Material itemMat = new ItemStack(itemID).getType();
+										Material itemMat =  slot.getItem();
 										ItemStack cost = new ItemStack(itemMat, itemAmt);
 										
-										if(player.getInventory().contains(itemID, itemAmt)) {
+										if(player.getInventory().contains(itemMat, itemAmt)) {
 											player.getInventory().removeItem(cost);
 											
 											//Let's go!
@@ -174,7 +175,8 @@ public class PlayerListener implements Listener {
 									}else {
 										if(!type.getItemCost().equalsIgnoreCase("0")) {
 											String[] item = type.getItemCost().split("\\,");
-											int id, amt;
+											String id;
+											int amt;
 											byte data;
 											Material itemMat;
 											ItemStack cost;
@@ -186,18 +188,22 @@ public class PlayerListener implements Listener {
 													return;
 												case 2:
 													try {
-														id = Integer.parseInt(item[0]);
+														id = (item[0]);
 														amt = Integer.parseInt(item[1]);
 													}catch (NumberFormatException e) {
 														plugin.severe("Type " + type.getName() + " has an incorrect itemCost, please fix.");
 														player.sendMessage("Please inform the administrator that this slot machine has an incorrect configuration, thanks.");
 														return;
 													}
-													
-													itemMat = new ItemStack(id).getType();
+													itemMat = Material.getMaterial(id.toUpperCase());
+													if(itemMat == null){
+														plugin.severe("Type " + type.getName() + " has an incorrect itemCost, please fix.");
+														player.sendMessage("Please inform the administrator that this slot machine has an incorrect configuration, thanks.");
+														return;
+													}
 													cost = new ItemStack(itemMat, amt);
 													
-													if(player.getInventory().contains(id, amt)) {
+													if(player.getInventory().contains(itemMat, amt)) {
 														player.getInventory().removeItem(cost);
 														break;
 													}else {
@@ -208,8 +214,9 @@ public class PlayerListener implements Listener {
 														} return;
 													}
 												case 3:
+													int idi;
 													try {
-														id = Integer.parseInt(item[0]);
+														idi = Integer.parseInt(item[0]);
 														data = Byte.parseByte(item[1]);
 														amt = Integer.parseInt(item[2]);
 													}catch (NumberFormatException e) {
@@ -217,12 +224,10 @@ public class PlayerListener implements Listener {
 														player.sendMessage("Please inform the administrator that this slot machine has an incorrect configuration, thanks.");
 														return;
 													}
-													
-													itemMat = new ItemStack(id).getType();
+													itemMat = BukkitAdapter.adapt(LegacyMapper.getInstance().getItemFromLegacy(idi,data));
 													cost = new ItemStack(itemMat, amt);
-													cost.getData().setData(data);
 													
-													if(player.getInventory().contains(id, amt)) {
+													if(player.getInventory().contains(itemMat, amt)) {
 														player.getInventory().removeItem(cost);
 														break;
 													}else {
@@ -341,7 +346,7 @@ public class PlayerListener implements Listener {
 	private void chargeAndPlay(Type type, SlotMachine slot, Player player) {
 		// Player has enough money
 		Double cost = type.getCost();
-		if(plugin.economy.has(player.getName(), cost)) {
+		if(plugin.economy.has(player, cost)) {
 			//Let's go!
 			Game game = new Game(slot, player, plugin);
 			game.play();

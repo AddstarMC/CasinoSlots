@@ -3,6 +3,8 @@ package com.craftyn.casinoslots;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.craftyn.casinoslots.util.WorldGuardHook;
+import com.sk89q.worldguard.WorldGuard;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Server;
@@ -25,7 +27,6 @@ import com.craftyn.casinoslots.util.ConfigData;
 import com.craftyn.casinoslots.util.Permissions;
 import com.craftyn.casinoslots.util.StatData;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class CasinoSlots extends JavaPlugin {
 	
@@ -33,10 +34,10 @@ public class CasinoSlots extends JavaPlugin {
 	public Economy economy = null;
 	public Server server;
 	private PluginManager pm = null;
-	private WorldGuardPlugin worldGuard = null;
+	private WorldGuardHook worldGuard;
 	
 	public String pluginVer;
-	public boolean useTowny = false, useWorldGuard = false, enableSounds = true;
+	public boolean useTowny = false, useWorldGuard = false;
 	
 	private PlayerListener playerListener = new PlayerListener(this);
 	private BlockListener blockListener = new BlockListener(this);
@@ -93,11 +94,6 @@ public class CasinoSlots extends JavaPlugin {
 		configData.load();
 		saveConfig();
 		
-		if(configData.getBukkitVersion() < 2377) {
-			enableSounds = false;
-			error("Disabling sound support because your config value for the version is lower than the Recommended Build which enabled sounds.");
-		}
-		
 		if(configData.inDebug()) debug("Use World Guard checks? " + useWorldGuard);
 		if(useWorldGuard) {
 			checkWorldGuard();
@@ -138,8 +134,8 @@ public class CasinoSlots extends JavaPlugin {
 	private void checkWorldGuard() {
 		Plugin pl = pm.getPlugin("WorldGuard");
 		
-		if (pl != null && pl instanceof WorldGuardPlugin) {
-			worldGuard = (WorldGuardPlugin) pl;
+		if (pl != null) {
+			 worldGuard = new WorldGuardHook(WorldGuard.getInstance());
 		}
 	}
 
@@ -209,7 +205,7 @@ public class CasinoSlots extends JavaPlugin {
     }
 	
 	/** Returns the instance of World Guard. */
-	public WorldGuardPlugin getWorldGuard() {
+	public WorldGuardHook getWorldGuard() {
 		return worldGuard;
 	}
 	

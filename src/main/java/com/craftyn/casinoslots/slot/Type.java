@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.craftyn.casinoslots.CasinoSlots;
+import org.bukkit.Material;
 
 public class Type {
 	
@@ -12,13 +13,13 @@ public class Type {
 	
 	private String name, itemCost = String.valueOf(0);
 	private Double cost = 0d, createCost = 0d;
-	private ArrayList<String> reel;
+	private ArrayList<Material> reel;
 	private Map<String, String> messages;
 	private List<String> helpMessages;
 	private Map<String, Reward> rewards;
 	
 	// Initialize new type
-	public Type(String name, Double cost, String itemCost, Double createCost, ArrayList<String> reel, Map<String, String> messages, List<String> helpMessages, Map<String, Reward> rewards) {
+	public Type(String name, Double cost, String itemCost, Double createCost, ArrayList<Material> reel, Map<String, String> messages, List<String> helpMessages, Map<String, Reward> rewards) {
 		
 		this.name = name;
 		this.cost = cost;
@@ -51,7 +52,7 @@ public class Type {
 	}
 	
 	// Returns type reel
-	public ArrayList<String> getReel() {
+	public ArrayList<Material> getReel() {
 		return this.reel;
 	}
 	

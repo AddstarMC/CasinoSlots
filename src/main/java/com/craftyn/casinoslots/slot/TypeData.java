@@ -3,6 +3,10 @@ package com.craftyn.casinoslots.slot;
 import java.util.*;
 
 import com.craftyn.casinoslots.CasinoSlots;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.block.BlockState;
+import com.sk89q.worldedit.world.registry.LegacyMapper;
+import org.bukkit.Material;
 
 public class TypeData {
 	
@@ -85,7 +89,7 @@ public class TypeData {
 		Double cost = plugin.configData.config.getDouble(path + "cost");
 		String itemCost = plugin.configData.config.getString(path + "itemCost", "0");
 		Double createCost = plugin.configData.config.getDouble(path + "create-cost");
-		ArrayList<String> reel = getReel(name);
+		ArrayList<Material> reel = getReel(name);
 		
 		Map<String, String> messages = getMessages(name);
 		List<String> helpMessages = plugin.configData.config.getStringList(path + "messages.help");
@@ -96,26 +100,17 @@ public class TypeData {
 	}
 	
 	// Returns the parsed reel of a type
-	private ArrayList<String> getReel(String type) {		
+	private ArrayList<Material> getReel(String type) {
 		List<String> reel = plugin.configData.config.getStringList("types." + type + ".reel");
 		
-		ArrayList<String> parsedReel = new ArrayList<>();
+		ArrayList<Material> parsedReel = new ArrayList<>();
 		for(String m : reel) {
-			String[] mSplit = m.split("\\,");
-			int i = 1;
-			if (mSplit.length == 3) {
-				i = Integer.parseInt(mSplit[2]);
-			}else {
-				i = Integer.parseInt(mSplit[1]);
-			}
-			
-			while(i > 0) {
-				if (mSplit.length == 3) {
-					parsedReel.add(mSplit[0] + ":" + mSplit[1]);
-				}else {				
-					parsedReel.add(mSplit[0]);
-				}
-				i--;
+			String[] item = m.split("\\,");
+			Material mat = Material.getMaterial(item[0].toUpperCase());
+			Integer qty = Integer.parseInt(item[1]);
+			while(qty >0 ) {
+				parsedReel.add(mat);
+				qty--;
 			}
 		}
 		return parsedReel;
@@ -124,16 +119,25 @@ public class TypeData {
 	// Returns reward of id
 	public Reward getReward(String type, String id) {
 		// Split the id so that a damage value is optional
-		String blockId = String.valueOf(0);
+		String materialName;
 		String[] idSplit = id.split("\\,");
-			if (Integer.parseInt(idSplit[1]) == 0) {
-				blockId = idSplit[0];
+		Integer dam = null;
+			try {
+				dam = Integer.parseInt(idSplit[1]);
+			}catch (IndexOutOfBoundsException e){}
+			if (dam == null) {
+				materialName = idSplit[0];
 			}else {
-				blockId = id;
+				materialName = idSplit[0];
+				plugin.log(id +" is not a reward type we no longer use ID's and data..update.");
 			}
+			
 		
-		String path = "types." + type + ".rewards." + blockId + ".";
-		
+		String path = "types." + type + ".rewards." + materialName + ".";
+		if(!plugin.configData.config.contains(path)) {
+			plugin.log("Could not retrieve a reward for :" + path +" Constructed from: " +type +" + " +id);
+			return null;
+		}
 		String message = plugin.configData.config.getString(path + "message", "Award given!");
 		Double money = plugin.configData.config.getDouble(path + "money", 0.0);
 		List<String> action = null;
@@ -161,16 +165,35 @@ public class TypeData {
 		for(String itemId : ids) {
 			int id = 1; //setting this to 1 just in case something is wrong
 			byte data = 0;
+			String name;
 			String[] itemSplit = itemId.split("\\,");
 			if (itemSplit.length == 2) {
 				id = Integer.parseInt(itemSplit[0]);
 				data = Byte.parseByte(itemSplit[1]);
+				BlockState state = LegacyMapper.getInstance().getBlockFromLegacy(id,data);
+				if(state != null){
+					name = BukkitAdapter.adapt(state.getBlockType()).name();
+				}else{
+					plugin.log("The reward could not be processed: "+type+" : " + itemId);
+					continue;
+				}
 			}else {
-				id = Integer.parseInt(itemSplit[0]);
+				try {
+					id = Integer.parseInt(itemSplit[0]);
+					BlockState state = LegacyMapper.getInstance().getBlockFromLegacy(id);
+					if(state != null){
+						name = BukkitAdapter.adapt(state.getBlockType()).name();
+					}else{
+						plugin.log("The reward could not be processed: "+type+" : " + itemId);
+						continue;
+					}
+				}catch (NumberFormatException|IndexOutOfBoundsException e){
+					name = Material.getMaterial(itemId).name().toUpperCase();
+				}
 			}
 			
-			Reward reward = getReward(type, id + "," + data);
-			rewards.put(id + ":" + data, reward);
+			Reward reward = getReward(type, name);
+			rewards.put(name, reward);
 		}		
 		return rewards;
 	}

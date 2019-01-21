@@ -37,7 +37,7 @@ public abstract class AnCommand {
 	public Boolean isOwner(SlotMachine slot) {
 		if(!(sender instanceof Player)) return true; //The console
 
-        return plugin.permission.isAdmin(player) || slot.getOwner().equalsIgnoreCase(player.getName());
+        return plugin.permission.isAdmin(player) || slot.getOwner().equals(player);
 	}
 	
 	// Called when a player is denied permission to a command

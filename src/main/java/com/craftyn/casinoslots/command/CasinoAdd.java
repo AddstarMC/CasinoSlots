@@ -1,5 +1,7 @@
 package com.craftyn.casinoslots.command;
 
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.craftyn.casinoslots.CasinoSlots;
@@ -9,7 +11,7 @@ public class CasinoAdd extends AnCommand {
 	
 	private String name;
 	private String type;
-	private String owner;
+	private OfflinePlayer owner;
 	private String world;
 	
 	// Command for adding unmanaged slot machine
@@ -58,7 +60,7 @@ public class CasinoAdd extends AnCommand {
 					return true;
 				}
 				
-				owner = player.getName();
+				owner = player;
 				
 				// Creation cost
 				Double createCost = plugin.typeData.getType(type).getCreateCost();
@@ -74,7 +76,7 @@ public class CasinoAdd extends AnCommand {
 				world = player.getWorld().getName();
 				
 				//Good to start punching the blocks to create the slot.
-				SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, false, false, 0, 0);
+				SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, false, false, Material.AIR, 0);
 				plugin.slotData.toggleCreatingSlots(player, slot);
 				sendMessage("Punch a block to serve as the base for this slot machine.");
 			}

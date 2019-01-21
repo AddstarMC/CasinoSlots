@@ -1,6 +1,7 @@
 package com.craftyn.casinoslots.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.craftyn.casinoslots.CasinoSlots;
@@ -8,8 +9,10 @@ import com.craftyn.casinoslots.slot.SlotMachine;
 
 public class CasinoAddItem extends AnCommand {
 	
-	private String name, type, owner, world;
-	private int cmditemID, cmditemAMT;
+	private String name, type, world;
+	private Player owner;
+	private Material cmditemID;
+	private int cmditemAMT;
 	
 	// Command for adding unmanaged slot machine
 	public CasinoAddItem (CasinoSlots plugin, String[] args, Player player) {
@@ -33,7 +36,7 @@ public class CasinoAddItem extends AnCommand {
 					// Has type permission
 					if(plugin.permission.canCreateItemsType(player, typeName)) {
 						this.type = typeName;
-						this.owner = player.getName();
+						this.owner = player;
 					} else {//doesn't have permission
 						plugin.sendMessage(player, ChatColor.RED + "You do not have permission to create an item slot.");
 						return true;
@@ -45,10 +48,10 @@ public class CasinoAddItem extends AnCommand {
 				}
 				
 				//see if the itemID is an int
-				try {
-					cmditemID = Integer.parseInt(args[3]);
-				} catch (NumberFormatException e) {
-					plugin.sendMessage(player, "The item id that it will cost has to be a number.");
+			
+					cmditemID = Material.matchMaterial(args[3]);
+				if(cmditemID == null){
+					plugin.sendMessage(player, "The item that it will cost has to be a material name.");
 					return true;
 				}
 				
@@ -62,7 +65,7 @@ public class CasinoAddItem extends AnCommand {
 				
 				// Creation cost
 				Double createCost = plugin.typeData.getType(type).getCreateCost();
-				if(plugin.economy.has(owner, createCost)) {
+				if(plugin.economy.has( owner, createCost)) {
 					plugin.economy.withdrawPlayer(owner, createCost);
 				} else {
 					sendMessage("You can't afford to create this slot machine. Cost: " + createCost);

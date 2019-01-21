@@ -4,7 +4,6 @@
 options:
   debug: false
   config-version: 1.0
-  bukkit-version: 2377 #Changing this to something lower will disable sounds
   track-statistics: true
   allow-diagonal-winnings: false
   enable-slot-protection: true
@@ -27,29 +26,29 @@ types:
     cost: 100
     create-cost: 1000
     reel:
-    - 42,21
-    - 41,12
-    - 57,7
-    - 46,8
-    - 103,9
-    - 49,4
-    - 3,5
+    - IRON_BLOCK,21
+    - GOLD_BLOCK,12
+    - DIAMOND_BLOCK,7
+    - TNT,8
+    - MELON_BLOCK,9
+    - OBSIDIAN,4
+    - DIRT,5
     rewards:
-      '42':
+      'IRON_BLOCK':
         message: Winner - 3 iron blocks! An enchanted iron sword.
         money: 0.0
-        action: give 267,16,5 1
-      '41':
+        action: give IRON_SWORD,looting,5 1        # ITEM,Enchant,Enchant Level
+      'GOLD_BLOCK':
         message: Winner - 3 gold blocks! $300 awarded.
         money: 300.0
-      '57':
+      'DIAMOND_BLOCK':
         message: Winner - 3 diamond blocks! $750 awarded.
         money: 750.0
-      '46':
+      'TNT':
         action: kill
         message: Winne-
         money: 0.0
-      '103':
+      'MELON_BLOCK':
         action: give 103 10
         message: Winner - 3 ..melons? Nom.
         money: 0.0
@@ -70,33 +69,33 @@ types:
     cost: 150
     create-cost: 1000
     reel:
-    - 35,3,2
-    - 46,1
-    - 74,1
-    - 87,1
-    - 103,1
-    - 45,1
+    - LIGHTBLUEWOOL,2
+    - TNT,1
+    - lit_redstone_ore,1
+    - Netherrack,1
+    - melon_block,1
+    - brick_block,1
     rewards:
-      '35,3':
+      'LIGHTBLUEWOOL':
         action: goblind
         message: Winne- You can't see now!
         money: 0.0
-      '46':
+      'TNT':
         action: kill
         message: Winne-
         money: 0.0
-      '74':
+      'lit_redstone_ore':
         action: drugup
         message: Winne- Kids, drugs are bad!
-      '87':
+      'Netherrack':
         action: fire
         message: Winne- Fire hurts! Don't mess with it.
         money: 0.0
-      '103':
-        action: give 103 3
+      'melon_block':
+        action: give MELON 3
         message: Winner - 3 ..melons? Nom.
         money: 0.0
-      '45':
+      'brick_block':
         action:
         - gocrazy
         - command give [player] 336 1

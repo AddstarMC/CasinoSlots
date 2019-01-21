@@ -49,7 +49,7 @@ public class ResultsTask implements Runnable {
 			
 			if(!(slot.getSign() == null)) {
 				Block b = slot.getSign();
-				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN_POST)) {
+				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN)) {
 					Sign sign = (Sign) b.getState();
 					sign.setLine(3, player.getDisplayName());
 					sign.update(true);
@@ -139,7 +139,7 @@ public class ResultsTask implements Runnable {
 		// checks horizontal matches
 		for(int i = 0; i < 5; i++) {
 			Reward reward;
-			ArrayList<String> currentId = new ArrayList<>();
+			ArrayList<Material> currentId = new ArrayList<>();
 			List<Block> current = null;
 			
 			if(i < 3) {
@@ -164,17 +164,16 @@ public class ResultsTask implements Runnable {
 			}
 			
 			for(Block b : current) {
-				currentId.add(b.getTypeId() + ":" + b.getData());
+				currentId.add(b.getType());
 			}
 			
 			// Check for matches, deploy rewards
-			Set<String> currentSet = new HashSet<>(currentId);
+			Set<Material> currentSet = new HashSet<>(currentId);
 			if(currentSet.size() == 1) {
 				
 				// Added for the damage value blocks and rewards
-				int id = current.get(0).getTypeId();
-				byte data = current.get(0).getData();
-				reward = game.getType().getReward(id + ":" + data);
+				String id = current.get(0).getType().name();
+				reward = game.getType().getReward(id);
 				
 					// Break loop if and don't reward for something that doesn't have a reward.
 					if (reward == null) {

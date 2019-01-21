@@ -1,6 +1,8 @@
 package com.craftyn.casinoslots.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.craftyn.casinoslots.CasinoSlots;
@@ -10,7 +12,7 @@ public class CasinoAddManaged extends AnCommand {
 	
 	private String name;
 	private String type;
-	private String owner;
+	private OfflinePlayer owner;
 	private String world;
 	
 	/**
@@ -42,7 +44,7 @@ public class CasinoAddManaged extends AnCommand {
 					// Has type permission
 					if(plugin.permission.canCreateManagedType(player, typeName)) {
 						this.type = typeName;
-						this.owner = player.getName();
+						this.owner = player;
 					} else {
 						plugin.sendMessage(player, ChatColor.RED + "You do not have permission to create a managed slot.");
 						return true;
@@ -67,7 +69,7 @@ public class CasinoAddManaged extends AnCommand {
 				world = player.getWorld().getName();
 				
 				//Good to start punching the blocks to create the slot.
-				SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, true, false, 0, 0);
+				SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, true, false, Material.AIR, 0);
 				plugin.slotData.toggleCreatingSlots(player, slot);
 				plugin.sendMessage(player, "Punch a block to serve as the base for this slot machine.");
 			}

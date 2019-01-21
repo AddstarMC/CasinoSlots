@@ -1,14 +1,10 @@
 package com.craftyn.casinoslots.slot;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.registry.LegacyMapper;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -67,9 +63,9 @@ public class SlotData {
 		
 		this.slots.remove(slot.getName());
 		for(Block b : slot.getBlocks()) {
-			b.setTypeId(0);
+			b.setType(Material.AIR);
 		}
-		slot.getController().setTypeId(0);
+		slot.getController().setType(Material.AIR);
 		plugin.configData.slots.set("slots." + slot.getName(), null);
 		plugin.configData.saveSlots();
 	}
@@ -145,7 +141,7 @@ public class SlotData {
 		String path = "slots." + name + ".";
 		
 		String type = plugin.configData.slots.getString(path + "type");
-		String owner = plugin.configData.slots.getString(path + "owner");
+		String ownerUUID = plugin.configData.slots.getString(path + "owner");
 		String world = plugin.configData.slots.getString(path + "world");
 		Boolean managed = plugin.configData.slots.getBoolean(path + "managed");
 		Double funds = plugin.configData.slots.getDouble(path + "funds");
@@ -155,7 +151,8 @@ public class SlotData {
 		ArrayList<Block> blocks = getBlocks(name);
 		Block controller = getController(name);
 		Block sign = getSign(name);
-		
+		UUID uuid = UUID.fromString(ownerUUID);
+		OfflinePlayer owner = Bukkit.getOfflinePlayer(uuid);
 		//Get the chunks
 		String rChunk = getRchunk(blocks);
 		String cChunk = getCchunk(controller);
@@ -250,15 +247,15 @@ public class SlotData {
 		for(Block b : blocks) {
 			if(plugin.configData.inDebug()) {
 				if(blocks.get(0) == b || blocks.get(1) == b || blocks.get(2) == b) {
-					b.setTypeId(57);
+					b.setType(BukkitAdapter.adapt(LegacyMapper.getInstance().getBlockFromLegacy(57).getBlockType()));
 				}else if(blocks.get(3) == b || blocks.get(4) == b || blocks.get(5) == b) {
-					b.setTypeId(42);
+					b.setType(BukkitAdapter.adapt(LegacyMapper.getInstance().getBlockFromLegacy(42).getBlockType()));
 				}else if(blocks.get(6) == b || blocks.get(7) == b || blocks.get(8) == b) {
-					b.setTypeId(41);
+					b.setType(BukkitAdapter.adapt(LegacyMapper.getInstance().getBlockFromLegacy(41).getBlockType()));
 				}
 					
 			}else
-				b.setTypeId(57);
+				b.setType(BukkitAdapter.adapt(LegacyMapper.getInstance().getBlockFromLegacy(57).getBlockType()));
 		}
 		
 		slot.setBlocks(blocks);

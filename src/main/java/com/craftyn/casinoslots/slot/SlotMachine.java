@@ -1,8 +1,13 @@
 package com.craftyn.casinoslots.slot;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.registry.LegacyMapper;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 
 import com.craftyn.casinoslots.CasinoSlots;
@@ -10,28 +15,34 @@ import com.craftyn.casinoslots.CasinoSlots;
 public class SlotMachine {
 	
 	protected CasinoSlots plugin;
-	private String name, type, owner, world, reelChunk, controllerChunk;
+	private String name, type, world, reelChunk, controllerChunk;
+	private OfflinePlayer owner;
 	private Boolean managed, busy = false, enabled = true, item;
-	private int itemID, itemAMT;
+	private int itemAMT;
+	private Material itemID;
 	private ArrayList<Block> blocks;
 	private Block controller, sign = null;
 	private Double funds;
-	/**
-	 * Instantiates a new slot machine, usually from the config.
-	 *
-	 * @param name       		The name of the slot machine.
-	 * @param type       		The type of the slot machine being created.
-	 * @param owner      		The owner of the slot machine.
-	 * @param world      		The world in which the slot machine exists.
-	 * @param managed    		If it is managed or not (true or false).
-	 * @param blocks     		An ArrayList of the blocks of the slot machine.
-	 * @param controller 		The block of the controller.
-	 * @param funds      		Amount of money that the slot machine has.
-	 * @param item       		If it is an item slot or not (true or false).
-	 * @param itemID     		The item id that it accepts (should be set to 0 if false).
-	 * @param itemAmount 		The amount of the item that it takes from the player.
-	 */
-	public SlotMachine(CasinoSlots pl, String name, String type, String owner, String world, String reelChunk, String controllerChunk, Block sign, Boolean managed, ArrayList<Block> blocks, Block controller, Double funds, Boolean item, int itemID, int itemAmount) {
+	@Deprecated
+	public SlotMachine(CasinoSlots pl, String name, String type, OfflinePlayer owner, String world, String reelChunk, String controllerChunk, Block sign, Boolean managed, ArrayList<Block> blocks, Block controller, Double funds, Boolean item, int itemID, int itemAmount) {
+		this(pl,name,type,owner,world,reelChunk,controllerChunk,sign,managed,blocks,controller,funds,item, BukkitAdapter.adapt(LegacyMapper.getInstance().getItemFromLegacy(itemID)),itemAmount);
+	}
+		/**
+         * Instantiates a new slot machine, usually from the config.
+         *
+         * @param name       		The name of the slot machine.
+         * @param type       		The type of the slot machine being created.
+         * @param owner      		The owner of the slot machine.
+         * @param world      		The world in which the slot machine exists.
+         * @param managed    		If it is managed or not (true or false).
+         * @param blocks     		An ArrayList of the blocks of the slot machine.
+         * @param controller 		The block of the controller.
+         * @param funds      		Amount of money that the slot machine has.
+         * @param item       		If it is an item slot or not (true or false).
+         * @param itemID     		The item id that it accepts (should be set to 0 if false).
+         * @param itemAmount 		The amount of the item that it takes from the player.
+         */
+	public SlotMachine(CasinoSlots pl, String name, String type, OfflinePlayer owner, String world, String reelChunk, String controllerChunk, Block sign, Boolean managed, ArrayList<Block> blocks, Block controller, Double funds, Boolean item, Material itemID, int itemAmount) {
 		
 		this.plugin = pl;
 		this.name = name;
@@ -62,7 +73,7 @@ public class SlotMachine {
 	 * @param itemId   The item id that it accepts (should be set to 0 if false).
 	 * @param itemAmt  The amount of the item that it takes from the player.
 	 */
-	public SlotMachine(CasinoSlots pl, String name, String type, String owner, String world, Boolean managed, Boolean item, int itemId, int itemAmt) {
+	public SlotMachine(CasinoSlots pl, String name, String type, OfflinePlayer owner, String world, Boolean managed, Boolean item, Material itemId, int itemAmt) {
 		
 		this.plugin = pl;
 		this.name = name;
@@ -91,7 +102,7 @@ public class SlotMachine {
 	}
 	
 	// Returns owner of slot machine
-	public String getOwner() {
+	public OfflinePlayer getOwner() {
 		return this.owner;
 	}
 	
@@ -110,7 +121,7 @@ public class SlotMachine {
 	}
 	
 	// Returns which item it costs
-	public int getItem() {
+	public Material getItem() {
 		return this.itemID;
 	}
 	
@@ -217,9 +228,9 @@ public class SlotMachine {
 	}
 	
 	// Sets owner
-	public void setOwner(String owner) {
+	public void setOwner(UUID owner) {
 		if(plugin.configData.inDebug()) plugin.debug("We set the owner, did it save?");
-		this.owner = owner;
+		this.owner = Bukkit.getOfflinePlayer(owner);
 	}
 	
 	// Deposit the amount into the slot machine

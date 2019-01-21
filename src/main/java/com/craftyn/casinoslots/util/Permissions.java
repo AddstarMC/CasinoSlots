@@ -144,6 +144,6 @@ public class Permissions {
 	}
 	
 	public Boolean isOwner(Player player, SlotMachine slot) {		
-		return (isAdmin(player) || slot.getOwner().equalsIgnoreCase(player.getName()));
+		return (isAdmin(player) || slot.getOwner().equals(player));
 	}
 }
