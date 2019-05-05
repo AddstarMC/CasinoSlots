@@ -82,7 +82,7 @@ public class SlotData {
 	// Loads all slot machines into memory
 	public void loadSlots() {
 		
-		Integer i = 0;
+		int i = 0;
 		this.slots = new HashMap<>();
 		if(plugin.configData.slots.isConfigurationSection("slots")) {
 			Set<String> slots = plugin.configData.slots.getConfigurationSection("slots").getKeys(false);
@@ -146,7 +146,21 @@ public class SlotData {
 		Boolean managed = plugin.configData.slots.getBoolean(path + "managed");
 		Double funds = plugin.configData.slots.getDouble(path + "funds");
 		Boolean item = plugin.configData.slots.getBoolean(path + "item", false);
-		int itemID = plugin.configData.slots.getInt(path + "itemID", 0);
+		Material mat = null;
+		try {
+			String in = plugin.configData.slots.getString(path + "itemType","UNKNOWN");
+		if(in !=null){
+			Material itemType = Material.matchMaterial(in);
+			mat = itemType;
+		}
+		if(mat == null) {
+			int itemID = plugin.configData.slots.getInt(path + "itemID", 0);
+			mat = BukkitAdapter.adapt(LegacyMapper.getInstance().getBlockFromLegacy(itemID).getBlockType());
+			plugin.log("Configuration is using Item ID please update to use " +path + "itemType");
+		}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		int itemAmt = plugin.configData.slots.getInt(path + "itemAmt", 0);
 		ArrayList<Block> blocks = getBlocks(name);
 		Block controller = getController(name);
@@ -157,7 +171,7 @@ public class SlotData {
 		String rChunk = getRchunk(blocks);
 		String cChunk = getCchunk(controller);
 		
-		SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, rChunk, cChunk, sign, managed, blocks, controller, funds, item, itemID, itemAmt);
+		SlotMachine slot = new SlotMachine(plugin, name, type, owner, world, rChunk, cChunk, sign, managed, blocks, controller, funds, item, mat, itemAmt);
 		addSlot(slot);
 	}
 

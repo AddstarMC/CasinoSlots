@@ -49,7 +49,11 @@
     <repository>
       <id>vault-repo</id>
       <name>Public Releases</name>
-      <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+      <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
+    </repository>
+    <repository>
+      <id>sk89q</id>
+      <url>https://maven.sk89q.com/repo/</url>
     </repository>
     <!-- Addstar repo -->
     <repository>
@@ -92,7 +96,7 @@
     </dependency>
     <dependency>
       <groupId>com.sk89q.worldguard</groupId>
-      <artifactId>worldguard-core</artifactId>
+      <artifactId>worldguard-legacy</artifactId>
       <version>7.0.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
