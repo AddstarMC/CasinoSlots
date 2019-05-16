@@ -120,7 +120,7 @@ public class SlotData {
 		
 		plugin.configData.slots.set(path + "name", slot.getName());
 		plugin.configData.slots.set(path + "type", slot.getType());
-		plugin.configData.slots.set(path + "owner", slot.getOwner());
+		plugin.configData.slots.set(path + "owner", slot.getOwner().getUniqueId());
 		plugin.configData.slots.set(path + "world", slot.getWorld());
 		plugin.configData.slots.set(path + "sign", sXyz);
 		plugin.configData.slots.set(path + "managed", slot.isManaged());
