@@ -3,6 +3,7 @@ package com.craftyn.casinoslots.slot.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -40,7 +41,6 @@ public class RotateTask implements Runnable {
 			id = getNext();
 		}
 		
-		
 		// First column
 		blocks.get(column+6).setType(id);
 		
@@ -54,9 +54,8 @@ public class RotateTask implements Runnable {
 	
 	// Gets the next block in the reel
 	private Material getNext() {
-		
 		ArrayList<Material> reel = game.getType().getReel();
-		
+
 		Random generator = new Random();
 		int id = generator.nextInt(reel.size());
 		

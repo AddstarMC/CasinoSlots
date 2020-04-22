@@ -11,8 +11,8 @@
     <build.number />
     <plugin.version>${project.version}-${build.number}</plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <spigot.api.version>1.13</spigot.api.version>
-      <spigot.version>${spigot.api.version}.2-R0.1-SNAPSHOT</spigot.version>
+      <spigot.api.version>1.15</spigot.api.version>
+      <spigot.version>${spigot.api.version}-R0.1-SNAPSHOT</spigot.version>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:AddstarMC/CasinoSlots.git</connection>
@@ -74,8 +74,8 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
       <version>${spigot.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -86,6 +86,16 @@
       <version>1.7</version>
       <type>jar</type>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>craftbukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- WorldGuard for some of the sk functions -->
     <dependency>
@@ -99,6 +109,16 @@
       <artifactId>worldguard-legacy</artifactId>
       <version>7.0.0-SNAPSHOT</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>craftbukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   

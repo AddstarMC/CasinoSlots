@@ -18,8 +18,9 @@ public class ChunkListener implements Listener {
 	
 	@EventHandler
 	public void onChunkUnload(ChunkUnloadEvent event) {
-		if(event.isCancelled()) return;
-		
+		/*
+		* ChunkUnload events can no longer be cancelled so this is not necessary
+
 		String w = event.getWorld().getName();
 	    Chunk c = event.getChunk();
 	    int x = c.getX();
@@ -53,5 +54,6 @@ public class ChunkListener implements Listener {
 	    	}else {
             }
 	    }
+		*/
 	}
 }

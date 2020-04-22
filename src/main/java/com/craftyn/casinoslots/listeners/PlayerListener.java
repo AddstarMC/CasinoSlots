@@ -103,7 +103,7 @@ public class PlayerListener implements Listener {
 					}
 				}
 				
-				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN)) {
+				if (b.getType().equals(Material.OAK_WALL_SIGN) || b.getType().equals(Material.OAK_SIGN)) {
 					SlotMachine slot = plugin.slotData.punchingSign.get(player);
 					
 					Sign sign = (Sign) b.getState();

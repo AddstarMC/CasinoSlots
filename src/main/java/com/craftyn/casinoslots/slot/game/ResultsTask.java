@@ -49,7 +49,7 @@ public class ResultsTask implements Runnable {
 			
 			if(!(slot.getSign() == null)) {
 				Block b = slot.getSign();
-				if (b.getType().equals(Material.WALL_SIGN) || b.getType().equals(Material.SIGN)) {
+				if (b.getType().equals(Material.OAK_WALL_SIGN) || b.getType().equals(Material.OAK_SIGN)) {
 					Sign sign = (Sign) b.getState();
 					sign.setLine(3, player.getDisplayName());
 					sign.update(true);
@@ -175,10 +175,10 @@ public class ResultsTask implements Runnable {
 				String id = current.get(0).getType().name();
 				reward = game.getType().getReward(id);
 				
-					// Break loop if and don't reward for something that doesn't have a reward.
-					if (reward == null) {
-						break;
-					}
+				// Break loop if and don't reward for something that doesn't have a reward.
+				if (reward == null) {
+					break;
+				}
 				
 				results.add(reward);
 				

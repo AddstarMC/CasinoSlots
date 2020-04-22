@@ -55,7 +55,7 @@ public class RewardData {
 			String[] a = action.split(" ");
 			
 			// Give action
-			switch (a[0].toUpperCase()){
+			switch (a[0].toLowerCase()){
 				case "GIVE":
 					String[] itemData = a[1].split("\\,");
 					int amount = Integer.parseInt(a[2]);

@@ -68,7 +68,7 @@ public class Type {
 	
 	// Returns type reward of id
 	public Reward getReward(String id) {
-		return this.rewards.get(id);
+		return this.rewards.get(id.toLowerCase());
 	}
 	
 	// Set type use cost

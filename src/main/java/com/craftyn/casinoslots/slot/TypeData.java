@@ -108,9 +108,13 @@ public class TypeData {
 			String[] item = m.split("\\,");
 			Material mat = Material.getMaterial(item[0].toUpperCase());
 			Integer qty = Integer.parseInt(item[1]);
-			while(qty >0 ) {
-				parsedReel.add(mat);
-				qty--;
+			if (mat == null) {
+				plugin.log("  Reel " + type + " has invalid material " + m + "!");
+			} else {
+				while (qty > 0) {
+					parsedReel.add(mat);
+					qty--;
+				}
 			}
 		}
 		return parsedReel;
@@ -159,41 +163,14 @@ public class TypeData {
 	
 	// Returns Map of all rewards for this type
 	public Map<String, Reward> getRewards(String type) {
+		plugin.log("Getting reward entries for: types." + type + ".rewards");
 		Set<String> ids = plugin.configData.config.getConfigurationSection("types." + type +".rewards").getKeys(false);
 		Map<String, Reward> rewards = new HashMap<>();
 		
 		for(String itemId : ids) {
-			int id = 1; //setting this to 1 just in case something is wrong
-			byte data = 0;
-			String name;
-			String[] itemSplit = itemId.split("\\,");
-			if (itemSplit.length == 2) {
-				id = Integer.parseInt(itemSplit[0]);
-				data = Byte.parseByte(itemSplit[1]);
-				BlockState state = LegacyMapper.getInstance().getBlockFromLegacy(id,data);
-				if(state != null){
-					name = BukkitAdapter.adapt(state.getBlockType()).name();
-				}else{
-					plugin.log("The reward could not be processed: "+type+" : " + itemId);
-					continue;
-				}
-			}else {
-				try {
-					id = Integer.parseInt(itemSplit[0]);
-					BlockState state = LegacyMapper.getInstance().getBlockFromLegacy(id);
-					if(state != null){
-						name = BukkitAdapter.adapt(state.getBlockType()).name();
-					}else{
-						plugin.log("The reward could not be processed: "+type+" : " + itemId);
-						continue;
-					}
-				}catch (NumberFormatException|IndexOutOfBoundsException e){
-					name = Material.getMaterial(itemId).name().toUpperCase();
-				}
-			}
-			
-			Reward reward = getReward(type, name);
-			rewards.put(name, reward);
+			plugin.log("  Processing " + itemId + "...");
+			Reward reward = getReward(type, itemId.toLowerCase());
+			rewards.put(itemId.toLowerCase(), reward);
 		}		
 		return rewards;
 	}

@@ -140,7 +140,7 @@ public class ConfigData {
 				String path = "slots." + slot.getName() + ".";
 				this.slots.set(path + "name", slot.getName());
 				this.slots.set(path + "type", slot.getType());
-				this.slots.set(path + "owner", slot.getOwner().getUniqueId());
+				this.slots.set(path + "owner", slot.getOwner().getUniqueId().toString());
 				this.slots.set(path + "world", slot.getWorld());
 				this.slots.set(path + "managed", slot.isManaged());
 				this.slots.set(path + "funds", slot.getFunds());
